@@ -44,7 +44,7 @@ Companion @
 https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)
 or [Traefik](https://github.com/tiredofit/docker-traefik) in order to serve your pages. However, it will run just fine on it's own if you map appropriate ports. See the examples folder for a docker-compose.yml that does not rely on a reverse proxy.
 
-You will also need an external MariaDB container
+You will also need an external Postgresql container
 
 ## Installation
 
@@ -81,26 +81,26 @@ The following directories are used for configuration and can be mapped for persi
 Along with the Environment Variables from the [Base image](https://hub.docker.com/r/tiredofit/alpine) and [Web Image](https://hub.docker.com/r/tiredofit/nginx) below is the complete list of available options that can be used to customize your installation.
 
 
-| Parameter                                                               | Description                                                                                 | default     |
-| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ----------- |
-| `API_HOSTNAME | Api Hostname e.g. `api.example.com`                     |                                                                                             |
-| `API_PROTOCOL`                                                          | API protocol `http` or `https`                                                              | `https`     |
-| `APPLICATION_HOSTNAME | Application Hostname e.g. `baserow.example.com` |                                                                                             |
-| `APPLICATION_PROTOCOL`                                                  | Application protocol `http` or `https`                                                      | `https`     |
-| `BACKEND_WORKERS`                                                       | Backend API worker processes to spawn                                                       | `5`         |
-| `DB_HOST`                                                               | Host or container name of MariaDB Server e.g. `baserow-db`                                  |             |
-| `DB_NAME`                                                               | MariaDB Database name e.g. `baserow`                                                        |             |
-| `DB_PASS`                                                               | MariaDB Password for above Database e.g. `password`                                         |             |
-| `DB_PORT`                                                               | Postgresql Server Port - Default `5432`                                                     | `5432`      |
-| `DB_TYPE`                                                               | Database Type - Only `postgres` supported at this time                                      | `postgres`  |
-| `DB_USER`                                                               | MariaDB Username for above Database e.g. `baserow`                                          |             |
-| `INTERNAL_API_HOST`                                                     | If seperating the container via `MODE` the hostname of the internal API server              | `localhost` |
-| `INTERNAL_API_LISTEN_PORT`                                              | If seperating the container via `MODE` the listening port of the internal API server        | `8000`      |
-| `INTERNAL_API_PROTOCOL`                                                 | If seperating the container via `MODE` the protocol of the internal API server              | `http`      |
-| `LANGUAGE`                                                              | Application Language                                                                        | `en-us`     |
-| `LOG_LEVEL`                                                             | Log Level `debug` only at this time                                                         | `debug`     |
-| `MODE`                                                                  | Type of Installation `AIO` (All in one), `FRONTEND` (Web Frontend), `BACKEND` (API Backend) | `AIO`       |
-| `PASSWORD_RESET_MAX_AGE`                                                | Password Reset Token Validity in hours                                                      | `1`         |
+| Parameter                  | Description                                                                                 | Default     |
+| -------------------------- | ------------------------------------------------------------------------------------------- | ----------- |
+| `API_HOSTNAME`             | Api Hostname e.g. `api.example.com`                                                         |             |
+| `API_PROTOCOL`             | API protocol `http` or `https`                                                              | `https`     |
+| `APPLICATION_HOSTNAME`     | Application Hostname e.g. `baserow.example.com`                                             |             |
+| `APPLICATION_PROTOCOL`     | Application protocol `http` or `https`                                                      | `https`     |
+| `BACKEND_WORKERS`          | Backend API worker processes to spawn                                                       | `5`         |
+| `DB_HOST`                  | Host or container name of MariaDB Server e.g. `baserow-db`                                  |             |
+| `DB_NAME`                  | MariaDB Database name e.g. `baserow`                                                        |             |
+| `DB_PASS`                  | MariaDB Password for above Database e.g. `password`                                         |             |
+| `DB_PORT`                  | Postgresql Server Port - Default `5432`                                                     | `5432`      |
+| `DB_TYPE`                  | Database Type - Only `postgres` supported at this time                                      | `postgres`  |
+| `DB_USER`                  | MariaDB Username for above Database e.g. `baserow`                                          |             |
+| `INTERNAL_API_HOST`        | If seperating the container via `MODE` the hostname of the internal API server              | `localhost` |
+| `INTERNAL_API_LISTEN_PORT` | If seperating the container via `MODE` the listening port of the internal API server        | `8000`      |
+| `INTERNAL_API_PROTOCOL`    | If seperating the container via `MODE` the protocol of the internal API server              | `http`      |
+| `LANGUAGE`                 | Application Language                                                                        | `en-us`     |
+| `LOG_LEVEL`                | Log Level `debug` only at this time                                                         | `debug`     |
+| `MODE`                     | Type of Installation `AIO` (All in one), `FRONTEND` (Web Frontend), `BACKEND` (API Backend) | `AIO`       |
+| `PASSWORD_RESET_MAX_AGE`   | Password Reset Token Validity in hours                                                      | `1`         |
 ### Networking
 
 The following ports are exposed.

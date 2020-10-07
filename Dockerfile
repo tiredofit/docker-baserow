@@ -16,6 +16,7 @@ RUN apk update && \
                 python3-dev \
                 yarn \
                 && \
+    \
     apk add -t .baserow-run-deps \
                 libpq \
                 mariadb-connector-c-dev \
