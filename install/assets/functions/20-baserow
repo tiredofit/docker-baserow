@@ -1,0 +1,31 @@
+#!/usr/bin/with-contenv bash
+
+configure_backend() {
+    sed -i "s|SECRET_KEY = .* |SECRET_KEY = $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 100 | head -n 1)|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|LANGUAGE_CODE = '.*'|LANGUAGE_CODE = '${LANGUAGE}'|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|TIMEZONE = '.*'|TIMEZONE = '${TIMEZONE}'|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|RESET_PASSWORD_TOKEN_MAX_AGE = 60 * 60 * 48  # 48 hours|RESET_PASSWORD_TOKEN_MAX_AGE = 60 * 60 * ${RESET_PASSWORD_TOKEN_MAX_AGE}|g" /app/backend/src/baserow/config/settings/base.py
+}
+
+configure_nginx_backend() {
+    sed -i "s|<API_HOSTNAME>|${API_HOSTNAME}|g" /etc/nginx/conf.d/backend.conf
+    sed -i "s|<INTERNAL_API_PROTOCOL>|${INTERNAL_API_PROTOCOL}|g" /etc/nginx/conf.d/backend.conf
+    sed -i "s|<INTERNAL_API_HOST>|${INTERNAL_API_HOST}|g" /etc/nginx/conf.d/backend.conf
+    sed -i "s|<INTERNAL_API_LISTEN_PORT>|${INTERNAL_API_LISTEN_PORT}|g" /etc/nginx/conf.d/backend.conf
+}
+
+configure_nginx_frontend() {
+    sed -i "s|<APPLICATION_HOSTNAME>|${APPLICATION_HOSTNAME}|g" /etc/nginx/conf.d/frontend.conf
+}
+
+migrate_db() {
+    print_notice "Running any Database Migrations"
+    source /app/backend/env/bin/activate
+    export DJANGO_SETTINGS_MODULE="baserow.config.settings.base"
+    export DATABASE_PASS=${DB_PASS}
+    export DATABASE_USER=${DB_USER}
+    export DATABASE_HOST=${DB_HOST}
+    export DATABASE_PORT=${DB_PORT}
+    baserow migrate
+    deactivate
+}

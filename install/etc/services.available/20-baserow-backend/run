@@ -1,0 +1,15 @@
+#!/usr/bin/with-contenv bash
+
+source /assets/functions/00-container
+prepare_service all
+PROCESS_NAME="baserow-backend"
+
+# Django Settings Module & Python Path
+print_info "Starting Baserow backend"
+export DJANGO_SETTINGS_MODULE='baserow.config.settings.base'
+export PYTHONPATH=/app:/app/plugins/saas/backend/src
+/app/backend/env/bin/gunicorn -w ${BACKEND_WORKERS} \
+                              -b 0.0.0.0:${INTERNAL_API_LISTEN_PORT} \
+                              baserow.config.wsgi:application \
+                              --log-level=${LOG_LEVEL} \
+                              --chdir=/app

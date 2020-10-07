@@ -1,0 +1,41 @@
+#!/usr/bin/with-contenv bash
+
+source /assets/functions/00-container
+prepare_service
+PROCESS_NAME="baserow"
+
+case "${MODE}" in
+    "AIO" | "ALL" )
+        print_debug "Enabling All in One Container Mode"
+        sanity_var API_HOSTNAME "API Hostname (e.g. 'api.example.com')"
+        sanity_var APPLICATION_HOSTNAME "Application Hostname (e.g. 'baserow.example.com')"
+        sanity_db
+        db_ready ${DB_TYPE}
+        configure_backend
+        configure_nginx_backend
+        configure_nginx_frontend
+        migrate_db
+    ;;
+    "WEB" | "web" | "FRONTEND" | "frontend" )
+        print_debug "Enabling Web Front End Mode"
+        sanity_var API_HOSTNAME "API Hostname (e.g. 'api.example.com')"
+        sanity_var APPLICATION_HOSTNAME "Application Hostname (e.g. 'baserow.example.com')"
+        configure_nginx_frontend
+        rm -rf /etc/nginx/conf.d/backend.conf
+        rm -rf /etc/services.available/20-baserow-backend
+    ;;
+    "BACKEND" | "backend" | "API" | "api" )
+        print_debug "Enabling Backend/API Mode"
+        sanity_var API_HOSTNAME "API Hostname (e.g. 'api.example.com')"
+        sanity_var APPLICATION_HOSTNAME "Application Hostname (e.g. 'baserow.example.com')"
+        sanity_db
+        db_ready ${DB_TYPE}
+        configure_backend
+        configure_nginx_backend
+        migrate_db
+        rm -rf /etc/nginx/conf.d/frontend.conf
+        rm -rf /etc/services.available/30-baserow-frontend
+    ;;
+esac
+
+liftoff

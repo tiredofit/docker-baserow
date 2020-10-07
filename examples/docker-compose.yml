@@ -1,0 +1,86 @@
+version: '3.7'
+services:
+
+  baserow-app:
+    image: tiredofit/baserow:latest
+    container_name: baserow-app
+    depends_on:
+      - baserow-db
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.baserow.rule=Host(`home.example.com`) || Host(`api.example.com`)
+      - traefik.http.services.baserow.loadbalancer.server.port=80
+    volumes: 
+      - ./logs:/www/logs
+    environment:
+      - ZABBIX_HOSTNAME=baserow-app
+      
+      - TIMEZONE=America/Vancouver
+      - DEBUG_MODE=FALSE
+      - CONTAINER_LOG_LEVEL=INFO
+
+      - API_HOSTNAME=api.example.com
+      - APPLICATION_HOSTNAME=home.example.com
+
+      - DB_HOST=baserow-db
+      - DB_PORT=5432
+      - DB_USER=baserow
+      - DB_PASS=baserow
+      - DB_NAME=baserow
+
+      - LOG_LEVEL=debug
+ 
+      - BACKEND_WORKERS=5
+      - LANGUAGE=en-us
+      - PASSWORD_RESET_MAX_AGE=1
+    networks:
+      - proxy
+      - services
+    restart: always
+
+  baserow-db:
+    container_name: baserow-db
+    image: tiredofit/postgres:latest
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    environment:
+      - TIMEZONE=America/Vancouver
+      - ZABBIX_HOSTNAME=baserow-db
+
+      - POSTGRES_DB=baserow
+      - POSTGRES_USER=baserow
+      - POSTGRES_PASSWORD=baserow
+    networks:
+      - services
+    restart: always
+
+  baserow-db-backup:
+    container_name: baserow-db-backup
+    image: tiredofit/db-backup
+    links:
+      - baserow-db
+    volumes:
+      - ./dbbackup:/backup
+    environment:
+      - TIMEZONE=America/Vancouver
+      - ZABBIX_HOSTNAME=baserow-db-backup
+      - DB_HOST=baserow-db
+      - DB_TYPE=postgres
+      - DB_NAME=baserow
+      - DB_USER=baserow
+      - DB_PASS=baserow
+      - DB_DUMP_FREQ=1440
+      - DB_DUMP_BEGIN=0000
+      - DB_CLEANUP_TIME=8640
+      - COMPRESSION=BZ
+      - MD5=TRUE
+    networks:
+      - services
+    restart: always
+
+networks:
+  proxy:
+    external: true
+  services:
+    external: true
+
