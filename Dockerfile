@@ -27,6 +27,7 @@ RUN apk update && \
                 && \
     \
     ln -s /usr/bin/python3 /usr/bin/python && \
+    yarn global add mjml && \
     git clone https://gitlab.com/bramw/baserow/ /app && \
     cd /app && \
     git checkout "${BASEROW_VERSION}" && \

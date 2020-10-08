@@ -4,10 +4,11 @@ source /assets/functions/00-container
 prepare_service all
 PROCESS_NAME="baserow-backend"
 
-# Django Settings Module & Python Path
-print_info "Starting Baserow backend"
+export PRIVATE_BACKEND_URL="${INTERNAL_API_PROTOCOL}://${INTERNAL_API_HOST}:${INTERNAL_API_LISTEN_PORT}"
 export DJANGO_SETTINGS_MODULE='baserow.config.settings.base'
 export PYTHONPATH=/app:/app/plugins/saas/backend/src
+
+print_info "Starting Baserow backend"
 /app/backend/env/bin/gunicorn -w ${BACKEND_WORKERS} \
                               -b 0.0.0.0:${INTERNAL_API_LISTEN_PORT} \
                               baserow.config.wsgi:application \

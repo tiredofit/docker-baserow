@@ -1,13 +1,46 @@
 #!/usr/bin/with-contenv bash
 
 configure_backend() {
-    sed -i "s|SECRET_KEY = .* |SECRET_KEY = $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 100 | head -n 1)|g" /app/backend/src/baserow/config/settings/base.py
+    print_debug "Configuring Backend"
+    ## Remove once MR #94 in place
+    sed -i "/ALLOWED_HOSTS =/a ALLOWED_HOSTS.append('${API_HOSTNAME}')" /app/backend/src/baserow/config/settings/base.py
+    ##
+    sed -i "s|DEBUG = .*|DEBUG = ${APP_DEBUG}|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|SECRET_KEY = .*|SECRET_KEY = '$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 100 | head -n 1)'|g" /app/backend/src/baserow/config/settings/base.py
     sed -i "s|LANGUAGE_CODE = '.*'|LANGUAGE_CODE = '${LANGUAGE}'|g" /app/backend/src/baserow/config/settings/base.py
     sed -i "s|TIMEZONE = '.*'|TIMEZONE = '${TIMEZONE}'|g" /app/backend/src/baserow/config/settings/base.py
     sed -i "s|RESET_PASSWORD_TOKEN_MAX_AGE = 60 * 60 * 48  # 48 hours|RESET_PASSWORD_TOKEN_MAX_AGE = 60 * 60 * ${RESET_PASSWORD_TOKEN_MAX_AGE}|g" /app/backend/src/baserow/config/settings/base.py
+    ## DB Functions
+    sed -i "s|'ENGINE': 'django.db.backends.postgresql',|'ENGINE': 'django.db.backends.${DB_TYPE}',|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|'NAME': os.getenv.*|'NAME': '${DB_NAME}',|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|'USER': os.getenv.*|'USER': '${DB_USER}',|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|'PASSWORD': os.getenv.*|'PASSWORD': '${DB_PASS}',|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|'HOST': os.getenv.*|'HOST': '${DB_HOST}',|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|'USER': os.getenv.*|'USER': '${DB_USER}'|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|'PORT': os.getenv.*|'PORT': '${DB_PORT}',|g" /app/backend/src/baserow/config/settings/base.py
+    ## Hardcode API/Application URLs
+    sed -i "s|PUBLIC_BACKEND_DOMAIN = os.getenv.*|PUBLIC_BACKEND_DOMAIN = '${API_HOSTNAME}'|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|PUBLIC_BACKEND_URL = os.getenv.*|PUBLIC_BACKEND_URL = '${API_PROTOCOL}://${API_HOSTNAME}'|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|PUBLIC_WEB_FRONTEND_DOMAIN = os.getenv.*|PUBLIC_WEB_FRONTEND_DOMAIN = '${APPLICATION_HOSTNAME}'|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "s|PUBLIC_WEB_FRONTEND_URL = os.getenv.*|PUBLIC_WEB_FRONTEND_URL = '${APPLICATION_PROTOCOL}://${APPLICATION_HOSTNAME}'|g" /app/backend/src/baserow/config/settings/base.py
+    ## MJML Service
+    sed -i "s|MJML_BACKEND_MODE = 'tcpserver'|MJML_BACKEND_MODE = 'cmd'|g" /app/backend/src/baserow/config/settings/base.py
+    sed -i "/MJML_BACKEND_MODE/a MJML_CMD_EXEC = 'mjml'"
+    #sed -i "s|(os.getenv('MJML_SERVER_HOST', 'mjml'), os.getenv('MJML_SERVER_PORT', 28101))|('${MJML_HOSTNAME}', ${MJML_LISTEN_PORT}),|g" /app/backend/src/baserow/config/settings/base.py
+    ## Email Setup
+    cat <<EOF >> /app/backend/src/baserow/config/settings/base.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = '${SMTP_HOST}'
+EMAIL_PORT = '${SMTP_PORT}'
+EMAIL_HOST_PASSWORD = '${SMTP_PASS}'
+EMAIL_HOST_USER = '${SMTP_USER}'
+EMAIL_SUBJECT_PREFIX = '${MAIL_SUBJECT_PREFIX}'
+EOF
+
 }
 
 configure_nginx_backend() {
+    print_debug "Configuring Nginx Backend"
     sed -i "s|<API_HOSTNAME>|${API_HOSTNAME}|g" /etc/nginx/conf.d/backend.conf
     sed -i "s|<INTERNAL_API_PROTOCOL>|${INTERNAL_API_PROTOCOL}|g" /etc/nginx/conf.d/backend.conf
     sed -i "s|<INTERNAL_API_HOST>|${INTERNAL_API_HOST}|g" /etc/nginx/conf.d/backend.conf
@@ -15,6 +48,7 @@ configure_nginx_backend() {
 }
 
 configure_nginx_frontend() {
+    print_debug "Configuring Nginx Frontend"
     sed -i "s|<APPLICATION_HOSTNAME>|${APPLICATION_HOSTNAME}|g" /etc/nginx/conf.d/frontend.conf
 }
 

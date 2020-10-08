@@ -1,3 +1,10 @@
+## 0.2.0 2020-10-07 <dave at tiredofit dot ca>
+
+   ### Added
+      - Better handling of configuration changes
+      - Initial MJML Server support
+      - Application works :)
+
 ## 0.1.0 2020-10-07 <dave at tiredofit dot ca>
 
    ### Added
