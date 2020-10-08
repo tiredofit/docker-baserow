@@ -32,7 +32,6 @@ This will build a container for [Baserow](https://baserow.io/) - An open source 
   - [Data-Volumes](#data-volumes)
   - [Environment Variables](#environment-variables)
   - [Networking](#networking)
-- [Known Issues](#known-issues)
 - [Maintenance](#maintenance)
   - [Shell Access](#shell-access)
 - [References](#references)
@@ -63,9 +62,11 @@ docker pull tiredofit/baserow
 * Map [persistent storage](#data-volumes) for access to configuration and data files for backup.
 * Make [networking ports](#networking) available for public access if necessary
 
+Once installed visit your "APPLICATION_HOSTNAME" environment variable with a web browser and proceed with registering a user account for yourself.
+
 **The first boot can take from 2 minutes - 5 minutes depending on your CPU to setup the proper schemas.**
 
-Login to the web server and enter in your admin email address, admin password and start configuring the system!
+
 
 ## Configuration
 
@@ -82,27 +83,27 @@ The following directories are used for configuration and can be mapped for persi
 Along with the Environment Variables from the [Base image](https://hub.docker.com/r/tiredofit/alpine) and [Web Image](https://hub.docker.com/r/tiredofit/nginx) below is the complete list of available options that can be used to customize your installation.
 
 
-| Parameter                  | Description                                                                                 | Default     |
-| -------------------------- | ------------------------------------------------------------------------------------------- | ----------- |
-| `API_HOSTNAME`             | Api Hostname e.g. `api.example.com`                                                         |             |
-| `API_PROTOCOL`             | API protocol `http` or `https`                                                              | `https`     |
-| `APPLICATION_HOSTNAME`     | Application Hostname e.g. `baserow.example.com`                                             |             |
-| `APPLICATION_PROTOCOL`     | Application protocol `http` or `https`                                                      | `https`     |
-| `APP_DEBUG`                | Application Debug Mode - Do not enable on Production | `False` |
-| `BACKEND_WORKERS`          | Backend API worker processes to spawn                                                       | `5`         |
-| `DB_HOST`                  | Host or container name of Postgresql Server e.g. `baserow-db`                                  |             |
-| `DB_NAME`                  | Postgresql Database name e.g. `baserow`                                                        |             |
-| `DB_PASS`                  | Postgresql Password for above Database e.g. `password`                                         |             |
-| `DB_PORT`                  | Postgresql Server Port - Default `5432`                                                     | `5432`      |
-| `DB_TYPE`                  | Database Type - Only `postgresql` supported at this time                                      | `postgresql`  |
-| `DB_USER`                  | Postgresql Username for above Database e.g. `baserow`                                          |             |
-| `INTERNAL_API_HOST`        | If seperating the container via `MODE` the hostname of the internal API server              | `localhost` |
-| `INTERNAL_API_LISTEN_PORT` | If seperating the container via `MODE` the listening port of the internal API server        | `8000`      |
-| `INTERNAL_API_PROTOCOL`    | If seperating the container via `MODE` the protocol of the internal API server              | `http`      |
-| `LANGUAGE`                 | Application Language                                                                        | `en-us`     |
-| `LOG_LEVEL`                | Log Level `debug` only at this time                                                         | `debug`     |
-| `MODE`                     | Type of Installation `AIO` (All in one), `FRONTEND` (Web Frontend), `BACKEND` (API Backend) | `AIO`       |
-| `PASSWORD_RESET_MAX_AGE`   | Password Reset Token Validity in hours                                                      | `1`         |
+| Parameter                  | Description                                                                                 | Default      |
+| -------------------------- | ------------------------------------------------------------------------------------------- | ------------ |
+| `API_HOSTNAME`             | Api Hostname e.g. `api.example.com`                                                         |              |
+| `API_PROTOCOL`             | API protocol `http` or `https`                                                              | `https`      |
+| `APPLICATION_HOSTNAME`     | Application Hostname e.g. `baserow.example.com`                                             |              |
+| `APPLICATION_PROTOCOL`     | Application protocol `http` or `https`                                                      | `https`      |
+| `APP_DEBUG`                | Application Debug Mode - Do not enable on Production                                        | `False`      |
+| `BACKEND_WORKERS`          | Backend API worker processes to spawn                                                       | `5`          |
+| `DB_HOST`                  | Host or container name of Postgresql Server e.g. `baserow-db`                               |              |
+| `DB_NAME`                  | Postgresql Database name e.g. `baserow`                                                     |              |
+| `DB_PASS`                  | Postgresql Password for above Database e.g. `password`                                      |              |
+| `DB_PORT`                  | Postgresql Server Port - Default `5432`                                                     | `5432`       |
+| `DB_TYPE`                  | Database Type - Only `postgresql` supported at this time                                    | `postgresql` |
+| `DB_USER`                  | Postgresql Username for above Database e.g. `baserow`                                       |              |
+| `INTERNAL_API_HOST`        | If seperating the container via `MODE` the hostname of the internal API server              | `localhost`  |
+| `INTERNAL_API_LISTEN_PORT` | If seperating the container via `MODE` the listening port of the internal API server        | `8000`       |
+| `INTERNAL_API_PROTOCOL`    | If seperating the container via `MODE` the protocol of the internal API server              | `http`       |
+| `LANGUAGE`                 | Application Language                                                                        | `en-us`      |
+| `LOG_LEVEL`                | Log Level `debug` only at this time                                                         | `debug`      |
+| `MODE`                     | Type of Installation `AIO` (All in one), `FRONTEND` (Web Frontend), `BACKEND` (API Backend) | `AIO`        |
+| `PASSWORD_RESET_MAX_AGE`   | Password Reset Token Validity in hours                                                      | `1`          |
 
 ### Networking
 
@@ -111,9 +112,6 @@ The following ports are exposed.
 | Port | Description |
 | ---- | ----------- |
 | `80` | HTTP        |
-
-## Known Issues
-- Forgot my password is not working yet in the image
 
 
 ## Maintenance
