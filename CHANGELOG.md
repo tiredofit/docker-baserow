@@ -1,3 +1,8 @@
+## 0.2.1 2020-11-03 <dave at tiredofit dot ca>
+ 
+   ### Added
+      - Update to baserow 0.5.0
+
 ## 0.2.0 2020-10-07 <dave at tiredofit dot ca>
 
    ### Added
