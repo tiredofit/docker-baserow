@@ -1,6 +1,6 @@
 FROM tiredofit/nginx:latest
 
-ENV BASEROW_VERSION=0.5.0 \
+ENV BASEROW_VERSION=0.6.0 \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE
 
 RUN apk update && \
@@ -8,6 +8,7 @@ RUN apk update && \
     apk add -t .baserow-build-deps \
                 g++ \
                 git \
+                jpeg-dev \
                 make \
                 mariadb-dev \
                 nodejs \
