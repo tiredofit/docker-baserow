@@ -1,3 +1,9 @@
+## 0.5.1 2021-03-19 <dave at tiredofit dot ca>
+
+   ### Added
+      - Reduce Image size by cleaning cargo cache
+
+
 ## 0.5.0 2021-03-19 <dave at tiredofit dot ca>
 
    ### Added 

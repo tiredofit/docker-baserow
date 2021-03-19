@@ -50,6 +50,6 @@ RUN apk update && \
     \
     ## Cleanup
     apk del .baserow-build-deps && \
-    rm -rf /root/.cache /root/.config /var/cache/apk/*
+    rm -rf /root/.cache /root/.config /root/.cargo /var/cache/apk/*
 
 ADD install /
