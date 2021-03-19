@@ -8,10 +8,11 @@ services:
       - baserow-db
     labels:
       - traefik.enable=true
-      - traefik.http.routers.baserow.rule=Host(`home.example.com`) || Host(`api.example.com`)
+      - traefik.http.routers.baserow.rule=Host(`home.example.com`) || Host(`api.example.com`) || Host(`media.example.com`)
       - traefik.http.services.baserow.loadbalancer.server.port=80
     volumes:
       - ./logs:/www/logs
+      - ./data:/data
     environment:
       - ZABBIX_HOSTNAME=baserow-app
 
@@ -21,6 +22,7 @@ services:
 
       - API_HOSTNAME=api.example.com
       - APPLICATION_HOSTNAME=home.example.com
+      - MEDIA_HOSTNAME=media.example.com
 
       - DB_HOST=baserow-db
       - DB_PORT=5432

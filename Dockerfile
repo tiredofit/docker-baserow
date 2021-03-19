@@ -6,9 +6,11 @@ ENV BASEROW_VERSION=1.0.1 \
 RUN apk update && \
     apk upgrade && \
     apk add -t .baserow-build-deps \
+                cargo \
                 g++ \
                 git \
                 jpeg-dev \
+                libffi-dev \
                 make \
                 mariadb-dev \
                 nodejs \

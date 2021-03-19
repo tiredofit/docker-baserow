@@ -52,6 +52,17 @@ configure_nginx_frontend() {
     sed -i "s|<APPLICATION_HOSTNAME>|${APPLICATION_HOSTNAME}|g" /etc/nginx/conf.d/frontend.conf
 }
 
+configure_nginx_media() {
+    print_debug "Configuring Nginx Media Vhost"
+    sed -i "s|<MEDIA_HOSTNAME>|${MEDIA_HOSTNAME}|g" /etc/nginx/conf.d/media.conf
+    sed -i "s|<MEDIA_LOCATION>|${MEDIA_LOCATION}|g" /etc/nginx/conf.d/media.conf
+}
+
+configure_media() {
+    print_debug "Configuring Media"
+    mkdir -p ${MEDIA_LOCATION}
+}
+
 migrate_db() {
     print_notice "Running any Database Migrations"
     source /app/backend/env/bin/activate

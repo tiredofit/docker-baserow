@@ -9,18 +9,24 @@ case "${MODE}" in
         print_debug "Enabling All in One Container Mode"
         sanity_var API_HOSTNAME "API Hostname (e.g. 'api.example.com')"
         sanity_var APPLICATION_HOSTNAME "Application Hostname (e.g. 'baserow.example.com')"
+        sanity_var MEDIA_HOSTNAME "Media Hostname (e.g. media.example.com)"
         sanity_db
         db_ready ${DB_TYPE}
         configure_backend
         configure_nginx_backend
         configure_nginx_frontend
+        configure_nginx_media
+        configure_media
         migrate_db
     ;;
     "WEB" | "web" | "FRONTEND" | "frontend" )
         print_debug "Enabling Web Front End Mode"
         sanity_var API_HOSTNAME "API Hostname (e.g. 'api.example.com')"
         sanity_var APPLICATION_HOSTNAME "Application Hostname (e.g. 'baserow.example.com')"
+        sanity_var MEDIA_HOSTNAME "Media Hostname (e.g. media.example.com)"
         configure_nginx_frontend
+        configure_nginx_media
+        configure_media
         rm -rf /etc/nginx/conf.d/backend.conf
         rm -rf /etc/services.available/20-baserow-backend
     ;;

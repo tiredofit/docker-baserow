@@ -4,6 +4,7 @@ source /assets/functions/00-container
 prepare_service all
 PROCESS_NAME="baserow-frontend"
 
+export MEDIA_URL=${MEDIA_HOSTNAME}
 export PUBLIC_BACKEND_DOMAIN="${API_HOSTNAME}"
 export PUBLIC_BACKEND_URL="${API_PROTOCOL}://${API_HOSTNAME}"
 export PUBLIC_WEB_FRONTEND_DOMAIN="${APPLICATION_HOSTNAME}"

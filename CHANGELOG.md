@@ -1,7 +1,9 @@
-## 1.0.1 2021-03-08
+## 0.5.0 2021-03-19 <dave at tiredofit dot ca>
 
-   ### Added
+   ### Added 
       - Baserow 1.0.1
+      - Ability to store Media (Set MEDIA_HOST environment variable as shown)
+
 
 ## 0.3.1 2021-01-09 <dave at tiredofit dot ca>
 
