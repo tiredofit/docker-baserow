@@ -1,4 +1,4 @@
-FROM tiredofit/nginx:latest
+FROM tiredofit/nginx:alpine-3.13
 
 ENV BASEROW_VERSION=1.1.0 \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE
