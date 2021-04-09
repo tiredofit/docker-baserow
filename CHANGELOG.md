@@ -1,3 +1,9 @@
+## 0.6.0 2021-04-08 <dave at tiredofit dot ca>
+
+   ### Added
+      - Baserow 1.1.0
+
+
 ## 0.5.1 2021-03-19 <dave at tiredofit dot ca>
 
    ### Added

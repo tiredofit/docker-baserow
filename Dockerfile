@@ -1,6 +1,6 @@
 FROM tiredofit/nginx:latest
 
-ENV BASEROW_VERSION=1.0.1 \
+ENV BASEROW_VERSION=1.1.0 \
     NGINX_ENABLE_CREATE_SAMPLE_HTML=FALSE
 
 RUN apk update && \
